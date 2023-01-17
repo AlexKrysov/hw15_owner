@@ -1,45 +1,51 @@
 plugins {
-    id 'java-library'
-    id 'io.qameta.allure' version '2.10.0'
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+allure {
+    report {
+        version.set("2.20.1")
+    }
+    adapter { // отвечает за появление папочки build/allure-results
+        aspectjWeaver.set(true) //обработка аннотации @Step
+        frameworks {
+            junit5 { //название фреймворка
+                adapterVersion.set("2.20.1") //версия интеграции фреймворка и Allure
+            }
+        }
+    }
+}
+
+compileTestJava {
+    options.encoding = 'UTF-8'
 }
 
 repositories {
     mavenCentral()
 }
 
-allure {
-    report {
-        version.set("2.19.0")
-    }
-    adapter { // отвечает за появление папочки build/allure-results
-        aspectjWeaver.set(true) //обработка аннотации @Step
-        frameworks {
-            junit5 { //название фреймворка
-                adapterVersion.set("2.19.0") //версия интеграции фреймворка и Allure
-            }
-        }
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
 dependencies {
     testImplementation (
-            "com.github.javafaker:javafaker:1.0.2",
-            "com.codeborne:selenide:6.9.0",
-            'org.seleniumhq.selenium:selenium-java:3.141.59',
+            'org.junit.jupiter:junit-jupiter-api:5.9.0',
+            'com.codeborne:selenide:6.10.1',
+            'io.qameta.allure:allure-selenide:2.20.1',
+            "org.slf4j:slf4j-simple:2.0.5",
+            'com.github.javafaker:javafaker:1.0.2',
+            'org.assertj:assertj-core:3.23.1',
             'io.github.bonigarcia:webdrivermanager:5.2.1',
-            "io.qameta.allure:allure-selenide:2.19.0",
-            "org.junit.jupiter:junit-jupiter:5.9.1",
-            "org.slf4j:slf4j-simple:1.7.32",
             'org.aeonbits.owner:owner:1.0.4'
     )
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.1')
+
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+}
+
+test {
+    useJUnitPlatform()
 }
 
 tasks.withType(Test) {
+    systemProperties(System.getProperties())
     useJUnitPlatform()
 
     testLogging {
@@ -47,11 +53,5 @@ tasks.withType(Test) {
             events "started", "skipped", "failed", "standard_error", "standard_out"
             exceptionFormat "short"
         }
-    }
-}
-
-task smoke_tests(type: Test) {
-    useJUnitPlatform {
-        includeTags("smoke")
     }
 }
