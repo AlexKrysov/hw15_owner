@@ -9,7 +9,6 @@ import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class TestBase {
     RegistrationPage registrationPage = new RegistrationPage();
@@ -18,6 +17,7 @@ public class TestBase {
     static void setUp() {
 
         WebDriverProvider.config();
+        Configuration.timeout = 50000;
     }
 
     @BeforeEach
@@ -33,4 +33,3 @@ public class TestBase {
         Attach.addVideo();
     }
 }
-

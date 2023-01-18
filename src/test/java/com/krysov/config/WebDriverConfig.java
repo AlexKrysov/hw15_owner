@@ -2,31 +2,21 @@ package com.krysov.config;
 
 import org.aeonbits.owner.Config;
 
-import java.net.URL;
-
-@Config.Sources({
-        "classpath:${env}.properties"
-})
-
+@Config.Sources({"classpath:${env}/application.properties"})
 public interface WebDriverConfig extends Config {
 
-    @Key("baseUrl")
-    @DefaultValue("https://demoqa.com")
+    @Config.Key("baseUrl")
     String getBaseUrl();
 
-    @Key("remoteUrl")
+    @Config.Key("remoteUrl")
     String getRemote();
 
-    @Key("browser")
-    @DefaultValue("chrome")
+    @Config.Key("browser")
     String getBrowser();
 
-    @Key("browserVersion")
-    @DefaultValue("100.0")
+    @Config.Key("browserVersion")
     String getBrowserVersion();
 
-    @Key("browserSize")
-    @DefaultValue("1920x1080")
+    @Config.Key("browserSize")
     String getBrowserSize();
-
 }
